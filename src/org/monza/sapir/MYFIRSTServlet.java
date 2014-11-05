@@ -5,10 +5,11 @@ import javax.servlet.http.*;
 
 @SuppressWarnings("serial")
 public class MYFIRSTServlet extends HttpServlet {
-	int num1=3, num2=4, num3=7;
+	int num1=3, num2=4, num3=7,result=(num1+num2)*num3;
+	String resultStr = new String ("<h1>Result of ("+num1+"+"+num2+")*"+num3+"="+result+"</h1");
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		resp.setContentType("text/plain");
-		resp.getWriter().printf("Result of (%d+%d)*%d=%d",num1,num2,num3,(num1+num2)*num3);
+		resp.setContentType("text/html");
+		resp.getWriter().println(resultStr);
 	}
 }

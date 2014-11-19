@@ -44,7 +44,7 @@ public class Stock extends HttpServlet {
 		date = Date;
 	}
 	public String getHtmlDescription() {
-		stockHtmlDetailsString = "<b>stock symbol</b> : "+getsymbol()+ "<b> Bid </b> : "+getAsk()+ "<b> Ask </b> : "+getBid()+ "<b> Date </b> : "+getdate();
+		stockHtmlDetailsString = "<b>stock symbol</b> : "+getsymbol()+ "<b> Ask </b> : "+getAsk()+ "<b> Bid </b> : "+getBid()+ "<b> Date </b> : "+getdate();
 		return stockHtmlDetailsString;
 	}
 	

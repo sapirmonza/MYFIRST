@@ -53,6 +53,7 @@ public class Stock extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		Stock stock1,stock2,stock3;
+		
 		stock1 = new Stock();
 		stock2 = new Stock();
 		stock3 = new Stock();

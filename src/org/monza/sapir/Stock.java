@@ -12,7 +12,8 @@ public class Stock extends HttpServlet {
 	private float Bid;
 	private java.util.Date date;
 	private String stockHtmlDetailsString = "Unknown";
-	
+
+
 	public Stock() {
 		symbol = "Unknown";
 		Ask = 0;
@@ -40,7 +41,7 @@ public class Stock extends HttpServlet {
 	public java.util.Date getdate() {
 		return date;
 	}
-	public void setdate(java.util.Date Date) {
+	public void setdate(Date ) {
 		date = Date;
 	}
 	public String getHtmlDescription() {

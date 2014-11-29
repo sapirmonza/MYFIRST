@@ -22,7 +22,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>PortfolioStocks</servlet-name>
-		<servlet-class>org.monza.sapir.servlet</servlet-class>
+		<servlet-class>org.monza.sapir.servlet.PortfolioServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PortfolioStocks</servlet-name>

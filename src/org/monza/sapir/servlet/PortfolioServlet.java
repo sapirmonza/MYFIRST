@@ -1,12 +1,8 @@
 package org.monza.sapir.servlet;
 
 import java.util.*;
-import java.text.SimpleDateFormat;
 import java.io.IOException;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import org.monza.sapir.Stock;
 import org.monza.sapir.model.Portfolio;
 import org.monza.sapir.service.StockService;

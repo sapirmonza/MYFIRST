@@ -2,13 +2,9 @@ package org.monza.sapir;
 
 import java.util.*;
 import java.text.SimpleDateFormat;
-import java.io.IOException;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-public class Stock extends HttpServlet {
+public class Stock {
 	private String symbol;
 	private float Ask;
 	private float Bid;

@@ -8,9 +8,9 @@ import org.monza.sapir.Stock;
 import org.monza.sapir.model.Portfolio.StockStatus;
 
 public class Portfolio {
-	final int MAX_PROTFOLIO_SIZE = 5;
-	final Stock stocks[];
-	final StockStatus stockSatus[];
+	final static int MAX_PROTFOLIO_SIZE = 5;
+	private Stock[] stocks;
+	private StockStatus[] stockSatus;
 	private int portfolioSize = 0;
 	
 	public Portfolio() {
@@ -28,9 +28,9 @@ public class Portfolio {
 	}
 	
 	public class StockStatus{
-		final int DO_NOTHING = 0;
-		final int BUY = 1;
-		final int SELL = 2;
+		final static int DO_NOTHING = 0;
+		final static int BUY = 1;
+		final static int SELL = 2;
 		public String symbol;
 		public float currentBid;
 		public float currentAsk;

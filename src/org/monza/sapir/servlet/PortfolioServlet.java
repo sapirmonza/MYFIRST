@@ -6,7 +6,7 @@ import javax.servlet.http.*;
 
 import org.monza.sapir.Stock;
 import org.monza.sapir.model.Portfolio;
-import org.monza.sapir.service.StockService;
+import org.monza.sapir.service.PortfolioService;
 
 @SuppressWarnings("serial")
 
@@ -15,12 +15,16 @@ public class PortfolioServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException{
-		StockService portfolioService = new StockService();
-		Portfolio portfolio = new Portfolio();
+		PortfolioService portfolioService = new PortfolioService();
+		Portfolio portfolio = portfolioService.getPortfolio();
 		Stock[] stocks = portfolio.getStock();
 		
+		
 		resp.setContentType("text/html");
-		resp.getWriter().println(stocks);
+		resp.getWriter().println("Portfolio:<br><br>");
+		resp.getWriter().println(stocks[0].getHtmlDescription() + "<br><br>");
+		resp.getWriter().println(stocks[1].getHtmlDescription() + "<br><br>");
+		resp.getWriter().println(stocks[2].getHtmlDescription() + "<br><br>");
 		
 	}
 

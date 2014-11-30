@@ -8,7 +8,7 @@ import org.monza.sapir.Stock;
 import org.monza.sapir.model.Portfolio.StockStatus;
 
 public class Portfolio {
-	final static int MAX_PROTFOLIO_SIZE = 5;
+	private final static int MAX_PROTFOLIO_SIZE = 5;
 	private Stock[] stocks;
 	private StockStatus[] stockSatus;
 	private int portfolioSize = 0;
@@ -19,8 +19,8 @@ public class Portfolio {
 	}
 	
 	public void addStock(Stock stock){
-		stocks[portfolioSize] = stock;
-		portfolioSize++;
+			stocks[portfolioSize] = stock;
+			portfolioSize++;
 	}
 	
 	public Stock[] getStock(){
@@ -28,14 +28,14 @@ public class Portfolio {
 	}
 	
 	public class StockStatus{
-		final static int DO_NOTHING = 0;
-		final static int BUY = 1;
-		final static int SELL = 2;
-		public String symbol;
-		public float currentBid;
-		public float currentAsk;
-		public Date date;
-		public int recommendation;
-		public int stockQuntity;
+		private final static int DO_NOTHING = 0;
+		private final static int BUY = 1;
+		private final static int SELL = 2;
+		private String symbol;
+		private float currentBid;
+		private float currentAsk;
+		private Date date;
+		private int recommendation;
+		private int stockQuntity;
 	}
 }

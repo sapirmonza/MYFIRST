@@ -1,4 +1,4 @@
-package org.monza.sapir;
+package org.monza.sapir.model;
 
 import java.util.*;
 import java.text.SimpleDateFormat;

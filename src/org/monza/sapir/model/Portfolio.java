@@ -12,6 +12,7 @@ public class Portfolio {
 	private Stock[] stocks;
 	private StockStatus[] stockSatus;
 	private int portfolioSize = 0;
+	private String title = "<h1>portfolio</h1>";
 	
 	public Portfolio() {
 		stocks = new Stock[MAX_PROTFOLIO_SIZE];
@@ -25,6 +26,13 @@ public class Portfolio {
 	
 	public Stock[] getStock(){
 		return stocks;
+	}
+	
+	public String getHtmlString(){
+		int i = 0;
+		for(i=0;i<portfolioSize;i++)
+			title += stocks[i].getHtmlDescription()+"<br>";
+		return title;
 	}
 	
 	public class StockStatus{

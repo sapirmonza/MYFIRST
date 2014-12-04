@@ -8,7 +8,15 @@ import org.monza.sapir.model.Portfolio;
 import org.monza.sapir.model.Stock;
 import org.monza.sapir.service.PortfolioService;
 
-@SuppressWarnings("serial")
+/**
+* PortfolioServlet class is used as a server app,The application running on the network because of him.
+* Create new  portfolioService and new portfolio, Initializes the portfolio by the values 
+* determined
+* and the call the method that print them.
+* sapir monza
+* 1/12/14
+* 
+*/
 
 public class PortfolioServlet extends HttpServlet {
 
@@ -17,7 +25,7 @@ public class PortfolioServlet extends HttpServlet {
 			throws IOException{
 		PortfolioService portfolioService = new PortfolioService();
 		Portfolio portfolio = portfolioService.getPortfolio();
-		Stock[] stocks = portfolio.getStock();
+
 
 
 		resp.setContentType("text/html");

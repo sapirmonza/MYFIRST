@@ -5,6 +5,13 @@ import java.util.*;
 import org.monza.sapir.model.Portfolio;
 import org.monza.sapir.model.Stock;
 
+/**
+* PortfolioService class initializes all fields of the stocks
+*create a new portfolio and add the stocks to the new portfolio.
+* sapir monza
+* 1/12/14
+* 
+*/
 
 public class PortfolioService { 
 	Portfolio myPortfolio;
@@ -12,6 +19,14 @@ public class PortfolioService {
 	public PortfolioService() {
 		myPortfolio = new Portfolio();
 	}
+	
+	/**
+	* getPortfolio method is initializes all fields of the stocks, add them to the new protfolio
+	* and return the new protfolio.
+	* sapir monza
+	* 1/12/14
+	* 
+	*/
 	public Portfolio getPortfolio(){
 
 		Stock stock1, stock2, stock3;

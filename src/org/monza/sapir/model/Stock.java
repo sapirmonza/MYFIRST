@@ -1,7 +1,6 @@
 package org.monza.sapir.model;
 
 import java.util.*;
-import java.text.SimpleDateFormat;
 
 
 public class Stock {
@@ -12,11 +11,15 @@ public class Stock {
 	private String stockHtmlDetailsString = "Unknown";
 
 
-	public Stock() {
-		symbol = "Unknown";
-		Ask = 0;
-		Bid = 0;
-		date = null;
+	public Stock(String string, float ask, float bid, Date date1) {
+		symbol = string;
+		Ask = ask;
+		Bid = bid;
+		date = date1;
+	}
+
+	public Stock(Stock stock){
+		this(stock.getsymbol(),stock.getAsk(),stock.getBid(),stock.getDate());
 	}
 	public String getsymbol() {
 		return symbol;
@@ -36,9 +39,8 @@ public class Stock {
 	public void setBid(float bid) {
 		Bid = bid;
 	}
-	public String getDate() {
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		return formatter.format(date);
+	public Date getDate() {
+		return date;
 	}
 	public void setDate(Date newDate) {
 		date = newDate;

@@ -5,6 +5,8 @@ import java.util.*;
 import org.monza.sapir.model.Portfolio;
 import org.monza.sapir.model.Stock;
 
+
+
 /**
 * PortfolioService class initializes all fields of the stocks
 *create a new portfolio and add the stocks to the new portfolio.
@@ -30,12 +32,18 @@ public class PortfolioService {
 	public Portfolio getPortfolio(){
 
 		Stock stock1, stock2, stock3;
+		
+		Date date = null;
+		stock1 = new Stock("PIH",(float)12.4,(float)13.1,date);
+		myPortfolio.addStock(stock1);
+		
+		stock2 = new Stock("AAL",(float)5.5,(float)5.78,date);
+		myPortfolio.addStock(stock2);
+		
+		stock3 = new Stock("CAAS",(float)31.5,(float)31.2,date);
+		myPortfolio.addStock(stock3);
 
-		stock1 = new Stock();
-		stock2 = new Stock();
-		stock3 = new Stock();
-
-		stock1.setsymbol("PIH");
+		/*stock1.setsymbol("PIH");
 		stock1.setAsk((float) 12.4);
 		stock1.setBid((float) 13.1);
 		stock1.setDate(new Date(114, 10, 15));
@@ -51,7 +59,7 @@ public class PortfolioService {
 		stock3.setAsk((float) 31.5);
 		stock3.setBid((float) 31.2);
 		stock3.setDate(new Date(114, 10, 15));
-		myPortfolio.addStock(stock3);
+		myPortfolio.addStock(stock3);*/
 
 		return myPortfolio;
 	}

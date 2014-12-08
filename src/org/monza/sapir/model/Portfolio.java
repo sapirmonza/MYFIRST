@@ -20,9 +20,22 @@ public class Portfolio {
 	private int portfolioSize = 0;
 	private String title;
 
-	public Portfolio() {
-		stocks = new Stock[MAX_PROTFOLIO_SIZE];
-		stockSatus = new StockStatus[MAX_PROTFOLIO_SIZE];	
+	public Portfolio(Stock[] newStocks, StockStatus[] newStockStatus) {
+		stocks = newStocks;
+		stockSatus = newStockStatus;	
+	}
+	
+	public Portfolio(Portfolio portfolio)
+	{
+		this(portfolio.stocks, portfolio.stockSatus);
+		
+		for(int i = 0; i < MAX_PROTFOLIO_SIZE ; i++){
+			stocks[i] = new Stock(portfolio.getStock()[i]);
+		}
+		
+		this.stockSatus = portfolio.stockSatus;
+		this.setTitle(portfolio.getTitle());
+		
 	}
 	
 	/**
@@ -48,6 +61,16 @@ public class Portfolio {
 		return stocks;
 	}
 	
+	
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	/**
 	* getHtmlString method is a print method, defines a new variable of string type
 	* and running loop over the stocks array and every time print different by symbol,Ask,Bid and date. 
@@ -58,7 +81,7 @@ public class Portfolio {
 
 	public String getHtmlString(){
 		int i = 0;
-		String getHtmlString = "<h1>portfolio</h1>" ;
+		String getHtmlString = "<h1>Stock Portfolio</h1>" ;
 		for(i=0;i<portfolioSize;i++)
 			getHtmlString += stocks[i].getHtmlDescription()+"<br>";
 		return getHtmlString;

@@ -5,19 +5,30 @@ import java.util.*;
 
 public class Stock {
 	private String symbol;
-	private float Ask;
-	private float Bid;
+	private float ask;
+	private float bid;
 	private Date date;
 	private String stockHtmlDetailsString = "Unknown";
 
-
-	public Stock(String string, float ask, float bid, Date date1) {
+	/**
+	* create new Stock
+	* sapir monza
+	* 8/12/14
+	* 
+	*/
+	public Stock(String string, float Ask, float Bid, Date date1) {
 		symbol = string;
-		Ask = ask;
-		Bid = bid;
+		ask = Ask;
+		bid = Bid;
 		date = date1;
 	}
 
+	/**
+	* Copies the data from the Stock and creates new Stock with the same data
+	* sapir monza
+	* 8/12/14
+	* 
+	*/
 	public Stock(Stock stock){
 		this(stock.getsymbol(),stock.getAsk(),stock.getBid(),stock.getDate());
 	}
@@ -28,16 +39,16 @@ public class Stock {
 		symbol = Symbol;
 	}
 	public float getAsk() {
-		return Ask;
+		return ask;
 	}
-	public void setAsk(float ask) {
-		Ask = ask;
+	public void setAsk(float Ask) {
+		ask = Ask;
 	}
 	public float getBid() {
-		return Bid;
+		return bid;
 	}
-	public void setBid(float bid) {
-		Bid = bid;
+	public void setBid(float Bid) {
+		bid = Bid;
 	}
 	public Date getDate() {
 		return date;

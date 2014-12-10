@@ -24,12 +24,24 @@ public class PortfolioServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException{
 		PortfolioService portfolioService = new PortfolioService();
-		Portfolio portfolio = portfolioService.getPortfolio();
+		Portfolio portfolio1 = portfolioService.getPortfolio();
+		Portfolio portfolio2 = new Portfolio(portfolio1);
 
 
 
 		resp.setContentType("text/html");
-		resp.getWriter().println(portfolio.getHtmlString());
+		portfolio2.setTitle("Potfolio #2");
+		resp.getWriter().println(portfolio1.getHtmlString());
+		resp.getWriter().println(portfolio2.getHtmlString());
+		portfolio1.removeStock(0);
+		resp.getWriter().println("<h1><b>After Remove Stock</h1></b>");
+		resp.getWriter().println(portfolio1.getHtmlString());
+		resp.getWriter().println(portfolio2.getHtmlString());
+		portfolio2.getStock()[2].setBid((float)55.55);
+		resp.getWriter().println("<h1><b>After Change The Bid</h1></b>");
+		resp.getWriter().println(portfolio1.getHtmlString());
+		resp.getWriter().println(portfolio2.getHtmlString());
+		
 
 	}
 

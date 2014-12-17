@@ -21,7 +21,7 @@ public class PortfolioService {
 	Portfolio myPortfolio;
 
 	public PortfolioService() {
-		myPortfolio = new Portfolio(new Stock[MAX_PROTFOLIO_SIZE], new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE");
+		myPortfolio = new Portfolio(new Stock[MAX_PROTFOLIO_SIZE], new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE",0);
 	}
 	
 	/**
@@ -37,17 +37,22 @@ public class PortfolioService {
 		
 		Date date = new Date();
 		
-		stock1 = new Stock("PIH",(float)12.4,(float)13.1,date);
+		stock1 = new Stock("PIH",(float)10,(float)8.5,date);
 		myPortfolio.addStock(stock1);
 		
-		stock2 = new Stock("AAL",(float)5.5,(float)5.78,date);
+		stock2 = new Stock("AAL",(float)30,(float)25.5,date);
 		myPortfolio.addStock(stock2);
 		
-		stock3 = new Stock("CAAS",(float)31.5,(float)31.2,date);
+		stock3 = new Stock("CAAS",(float)20,(float)15.5,date);
 		myPortfolio.addStock(stock3);
 		
 		myPortfolio.setTitle("Potfolio #1");
-
+		myPortfolio.setBalance(10000);
+		myPortfolio.buyStock("PIH", 20);
+		myPortfolio.buyStock("AAL", 30);
+		myPortfolio.buyStock("CAAS", 40);
+		myPortfolio.sellStock("AAL", -1);
+		myPortfolio.removeStock("CAAS");
 		
 		return myPortfolio;
 	}

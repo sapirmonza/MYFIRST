@@ -30,7 +30,7 @@ public class Stock {
 	* 
 	*/
 	public Stock(Stock stock){
-		this(stock.getsymbol(),stock.getAsk(),stock.getBid(),stock.getDate());
+		this(stock.getsymbol(),stock.getAsk(),stock.getBid(),new Date(stock.getDate().getTime()));
 	}
 	public String getsymbol() {
 		return symbol;

@@ -69,6 +69,12 @@ public class Portfolio {
 	*/
 
 	public void addStock(Stock stock){
+		for(int i=0; i<=portfolioSize-1; i++){
+			if(stock.getsymbol().equals(this.stocks[i].getsymbol())){
+				System.out.println("The stock Already exist");
+				return;
+			}
+		}
 		stocks[portfolioSize] = stock;
 		stockStatus[portfolioSize] = new StockStatus(stock.getsymbol(),stock.getBid(),stock.getAsk(),new Date(stock.getDate().getTime()),ALGO_RECOMMENDATION.DO_NOTHING, 0);
 		portfolioSize++;
@@ -120,6 +126,13 @@ public class Portfolio {
 		return (this.getBalance()+this.getStocksValue());
 	}
 	
+	/**
+	* sellStock method sell the stock only if it is exist in the Portfolio 
+	* and only if there is enough quantity in the stockQuntity.
+	* sapir monza
+	* 1/12/14
+	* 
+	*/
 	public boolean sellStock(String symbol, int qu){
 		for(int i=0; i<=portfolioSize-1 ; i++ ){
 			if(symbol.equals(this.stocks[i].getsymbol()) && qu == -1){
@@ -141,6 +154,14 @@ public class Portfolio {
 		return false;
 	}
 	
+	
+	/**
+	* buyStock method Buy the stock only if it is exist in the portfolio 
+	* and only if there is enough money in the balance.
+	* sapir monza
+	* 1/12/14
+	* 
+	*/
 	public boolean buyStock(String symbol, int qu){
 		for(int i=0; i<=portfolioSize-1; i++ ){
 			if(symbol.equals(this.stocks[i].getsymbol()) && qu == -1){
@@ -163,8 +184,9 @@ public class Portfolio {
 	}
 	
 	/**
-	* removeStock method is get the stock index that we whant to remove
-	* and remove him .
+	* removeStock method is get the stock's symbol that we whant to remove
+	* and if the stock is exist in the Portfolio, the method first of all sell all the quantity from this stock
+	* and then remove the stock from the protfolio.
 	* sapir monza
 	* 8/12/14
 	* 
@@ -191,7 +213,8 @@ public class Portfolio {
 
 	/**
 	* getHtmlString method is a print method, defines a new variable of string type
-	* and running loop over the stocks array and every time print different by symbol,Ask,Bid and date. 
+	* and first print the Portfolio Value, Total Stocks value and the Balance
+	* after that the method running loop over the stocks array and every time print different by symbol,Ask,Bid and date. 
 	* sapir monza
 	* 1/12/14
 	* 

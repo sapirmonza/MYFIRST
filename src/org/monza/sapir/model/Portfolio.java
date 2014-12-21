@@ -225,7 +225,7 @@ public class Portfolio {
 			getHtmlString += "<b>Portfolio Value: </b>"+this.getTotalValue()+"$ <b>Total Stocks value: </b>"+this.getStocksValue()+"$ <b>Balance: </b>"+this.getBalance()+"$<br><br>";
 			getHtmlString += "<U><b><H3>Stocks:</H3></b></U><br>";
 			for(int i = 0; i<=portfolioSize-1;i++){
-				getHtmlString +="<b>Stock "+(i+1)+".</b> "+ stocks[i].getHtmlDescription()+"<br>";
+				getHtmlString +="<b>Stock "+(i+1)+".</b> "+ stocks[i].getHtmlDescription()+"<b> Quntity</b>: "+this.stockStatus[i].stockQuntity+"<br>";
 			}
 			return getHtmlString;
 	}

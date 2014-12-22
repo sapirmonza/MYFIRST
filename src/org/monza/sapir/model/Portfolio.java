@@ -166,7 +166,7 @@ public class Portfolio {
 		for(int i=0; i<=portfolioSize-1; i++ ){
 			if(symbol.equals(this.stocks[i].getsymbol()) && qu == -1){
 				this.stockStatus[i].stockQuntity = (int)(this.balance/this.stockStatus[i].currentAsk);
-				this.updateBalance(0);
+				this.updateBalance(-1*this.stockStatus[i].currentAsk*this.stockStatus[i].stockQuntity);
 				return true;
 			}
 			else if(symbol.equals(this.stocks[i].getsymbol()) && this.balance>this.stockStatus[i].currentAsk*qu){

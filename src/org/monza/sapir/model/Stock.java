@@ -4,11 +4,11 @@ import java.util.*;
 
 
 public class Stock {
-	private String symbol;
-	private float ask;
-	private float bid;
-	private Date date;
-	private String stockHtmlDetailsString = "Unknown";
+	protected String symbol;
+	protected float ask;
+	protected float bid;
+	protected Date date;
+	protected String stockHtmlDetailsString = "Unknown";
 
 	/**
 	* create new Stock

@@ -3,8 +3,9 @@ package org.monza.sapir.service;
 import java.util.*;
 
 import org.monza.sapir.model.Portfolio;
-import org.monza.sapir.model.Portfolio.StockStatus;
-import org.monza.sapir.model.Stock;
+import org.monza.sapir.model.StockStatus;
+//import org.monza.sapir.model.Stock;
+import org.monza.sapir.model.Portfolio.ALGO_RECOMMENDATION;
 
 
 
@@ -21,8 +22,9 @@ public class PortfolioService {
 	Portfolio myPortfolio;
 
 	public PortfolioService() {
-		myPortfolio = new Portfolio(new Stock[MAX_PROTFOLIO_SIZE], new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE",0);
+		myPortfolio = new Portfolio( new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE",0);
 	}
+	
 	
 	/**
 	* getPortfolio method is initializes all fields of the stocks, add them to the new protfolio
@@ -33,17 +35,17 @@ public class PortfolioService {
 	*/
 	public Portfolio getPortfolio(){
 
-		Stock stock1,stock2, stock3;
+		StockStatus stock1,stock2, stock3;
 		
 		Date date = new Date();
 		
-		stock1 = new Stock("PIH",(float)10,(float)8.5,date);
+		stock1 = new StockStatus("PIH",(float)10,(float)8.5,date,0,ALGO_RECOMMENDATION.DO_NOTHING);
 		myPortfolio.addStock(stock1);
 		
-		stock2 = new Stock("AAL",(float)30,(float)25.5,date);
+		stock2 = new StockStatus("AAL",(float)30,(float)25.5,date,0,ALGO_RECOMMENDATION.DO_NOTHING);
 		myPortfolio.addStock(stock2);
 		
-		stock3 = new Stock("CAAS",(float)20,(float)15.5,date);
+		stock3 = new StockStatus("CAAS",(float)20,(float)15.5,date,0,ALGO_RECOMMENDATION.DO_NOTHING);
 		myPortfolio.addStock(stock3);
 		
 		myPortfolio.setTitle("Potfolio #1");

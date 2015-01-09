@@ -2,6 +2,11 @@ package org.monza.sapir.service;
 
 import java.util.*;
 
+import org.monza.sapir.exception.BalanceException;
+import org.monza.sapir.exception.PortfolioFullException;
+import org.monza.sapir.exception.StockAlreadyExistsException;
+import org.monza.sapir.exception.StockNotEnoughException;
+import org.monza.sapir.exception.StockNotExistException;
 import org.monza.sapir.model.Portfolio;
 import org.monza.sapir.model.StockStatus;
 //import org.monza.sapir.model.Stock;
@@ -21,9 +26,9 @@ public class PortfolioService {
 	private final static int MAX_PROTFOLIO_SIZE = 5;
 	Portfolio myPortfolio;
 
-	public PortfolioService() {
+/*	public PortfolioService() {
 		myPortfolio = new Portfolio( new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE",0);
-	}
+	}*/
 	
 	
 	/**
@@ -33,8 +38,9 @@ public class PortfolioService {
 	* 1/12/14
 	* 
 	*/
-	public Portfolio getPortfolio(){
-
+	public Portfolio getPortfolio() throws StockAlreadyExistsException, PortfolioFullException, BalanceException, StockNotExistException,StockNotEnoughException{
+		
+		myPortfolio = new Portfolio( new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE",0);
 		StockStatus stock1,stock2, stock3;
 		
 		Date date = new Date();
@@ -46,6 +52,7 @@ public class PortfolioService {
 		myPortfolio.addStock(stock2);
 		
 		stock3 = new StockStatus("CAAS",(float)20,(float)15.5,date,0,ALGO_RECOMMENDATION.DO_NOTHING);
+		myPortfolio.addStock(stock3);
 		myPortfolio.addStock(stock3);
 		
 		myPortfolio.setTitle("Potfolio #1");

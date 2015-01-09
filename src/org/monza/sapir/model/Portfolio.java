@@ -1,10 +1,16 @@
 package org.monza.sapir.model;
 
 import java.util.*;
-import java.text.SimpleDateFormat;
 
-import org.monza.sapir.service.PortfolioService;
+import org.monza.sapir.exception.BalanceException;
+import org.monza.sapir.exception.PortfolioFullException;
+import org.monza.sapir.exception.StockAlreadyExistsException;
+import org.monza.sapir.exception.StockNotEnoughException;
+import org.monza.sapir.exception.StockNotExistException;
+//import org.monza.sapir.service.PortfolioService;
 import org.monza.sapir.model.StockStatus;
+
+import java.util.logging.Logger;
 
 /**
 * Portfolio class holds all the stocks and the stocks status in arrays
@@ -15,6 +21,7 @@ import org.monza.sapir.model.StockStatus;
 */
 
 public class Portfolio {
+	private static final Logger log = Logger.getLogger(Portfolio.class.getSimpleName());
 	private final static int MAX_PROTFOLIO_SIZE = 5;
 	private StockStatus[] stockStatus;
 	private int portfolioSize = 0;
@@ -65,15 +72,21 @@ public class Portfolio {
 	* 
 	*/
 
-	public void addStock(Stock stock){
-		for(int i=0; i<=portfolioSize-1; i++){
-			if(stock.getsymbol().equals(this.stockStatus[i].getsymbol())){
-				System.out.println("The stock Already exist");
-				return;
+	public void addStock(Stock stock) throws StockAlreadyExistsException, PortfolioFullException{
+		if(this.portfolioSize<MAX_PROTFOLIO_SIZE){
+			for(int i=0; i<=portfolioSize-1; i++){
+				if(stock.getsymbol().equals(this.stockStatus[i].getsymbol())){
+					log.warning("Sorry, Stock " + stock.getsymbol() + " already exists");
+					throw new StockAlreadyExistsException(stock.getsymbol());
+				}
 			}
+			stockStatus[portfolioSize] = new StockStatus(stock.getsymbol(),stock.getAsk(),stock.getBid(),new Date(stock.getDate().getTime()),0 ,ALGO_RECOMMENDATION.DO_NOTHING);
+			portfolioSize++;
 		}
-		stockStatus[portfolioSize] = new StockStatus(stock.getsymbol(),stock.getAsk(),stock.getBid(),new Date(stock.getDate().getTime()),0 ,ALGO_RECOMMENDATION.DO_NOTHING);
-		portfolioSize++;
+		else{
+			log.warning("Sorry, You had reached maximum portfolio size [" + MAX_PROTFOLIO_SIZE + "]");
+			throw new PortfolioFullException();
+		}
 	}
 	
 	
@@ -130,25 +143,23 @@ public class Portfolio {
 	* 1/12/14
 	* 
 	*/
-	public boolean sellStock(String symbol, int qu){
+	public void sellStock(String symbol, int qu) throws StockNotEnoughException,StockNotExistException{
 		for(int i=0; i<=portfolioSize-1 ; i++ ){
-			if(symbol.equals(this.stockStatus[i].getsymbol()) && qu == -1){
+			if(symbol.equals(this.stockStatus[i].getsymbol()) && qu == -1 ||symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuntity() == qu){
 				this.updateBalance(this.stockStatus[i].bid*this.stockStatus[i].getStockQuntity());
 				this.stockStatus[i].setStockQuntity(0);
-				return true;
 				}
 			else if(symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuntity()>qu){
 				this.updateBalance(this.stockStatus[i].bid*qu);
 				this.stockStatus[i].setStockQuntity(-qu);
-				return true;
 			}
 			else if(symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuntity()<qu){
-				System.out.println("You do not have enough from this stock");
-				return false;
+				log.warning("Sorry, You do not have enough from this stock");
+				throw new StockNotEnoughException();
 			}
 		}
-		System.out.println("The stock does not exist");
-		return false;
+		log.warning("Sorry, The stock does not exist");
+		throw new StockNotExistException();
 	}
 	
 	
@@ -159,25 +170,23 @@ public class Portfolio {
 	* 1/12/14
 	* 
 	*/
-	public boolean buyStock(String symbol, int qu){
+	public void buyStock(String symbol, int qu) throws BalanceException, StockNotExistException{
 		for(int i=0; i<=portfolioSize-1; i++ ){
 			if(symbol.equals(this.stockStatus[i].getsymbol()) && qu == -1){
 				this.stockStatus[i].setStockQuntity((int)(this.balance/this.stockStatus[i].ask));
 				this.updateBalance(-1*this.stockStatus[i].ask*this.stockStatus[i].getStockQuntity());
-				return true;
 			}
 			else if(symbol.equals(this.stockStatus[i].getsymbol()) && this.balance>this.stockStatus[i].ask*qu){
 				this.stockStatus[i].setStockQuntity(qu);
 				this.updateBalance(this.stockStatus[i].ask*qu*-1);
-				return true;
 			}
 			else if (symbol.equals(this.stockStatus[i].getsymbol()) && this.balance<this.stockStatus[i].ask*qu){
-					System.out.println("You do not have enough balane to buy this stock");
-					return false;
+				log.warning("Sorry, You do not have enough balane to buy this stock");
+				throw new BalanceException();
 			}
 		}
-		System.out.println("The stock does not exist");
-		return false;
+		log.warning("Sorry, The stock does not exist");
+		throw new StockNotExistException();
 	}
 	
 	/**
@@ -186,9 +195,10 @@ public class Portfolio {
 	* and then remove the stock from the protfolio.
 	* sapir monza
 	* 8/12/14
+	 * @throws  
 	* 
 	*/
-	public boolean removeStock(String symbol){
+	public void removeStock(String symbol) throws StockNotEnoughException, StockNotExistException{
 		for(int i = 0; i<=portfolioSize-1; i++){
 			if(symbol.equals(this.stockStatus[i].getsymbol())){
 				this.sellStock(symbol,-1);
@@ -197,12 +207,12 @@ public class Portfolio {
 					this.stockStatus[j] = this.stockStatus[j+1];
 					
 				}
-				return true;
+				
 			}
 					
 		}
-		System.out.println("The stock does not exist");
-		return false;
+		log.warning("Sorry, The stock does not exist");
+		throw new StockNotExistException();
 	}
 
 	

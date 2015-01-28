@@ -1,59 +1,38 @@
 package org.monza.sapir.servlet;
 
+import org.monza.sapir.dto.PortfolioDto;
+import org.monza.sapir.dto.PortfolioTotalStatus;
+import org.monza.sapir.model.StockStatus;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.monza.sapir.exception.BalanceException;
-import org.monza.sapir.exception.PortfolioFullException;
-import org.monza.sapir.exception.StockAlreadyExistsException;
-import org.monza.sapir.exception.StockNotEnoughException;
-import org.monza.sapir.exception.StockNotExistException;
-import org.monza.sapir.model.Portfolio;
-import org.monza.sapir.model.Stock;
-import org.monza.sapir.service.PortfolioService;
+public class PortfolioServlet extends AbstractAlgoServlet {
 
-/**
-* PortfolioServlet class is used as a server app,The application running on the network because of him.
-* Create new  portfolioService and new portfolio, Initializes the portfolio by the values 
-* determined
-* and the call the method that print them.
-* sapir monza
-* 1/12/14
-* 
-*/
+	private static final long serialVersionUID = 1L;
 
-public class PortfolioServlet extends HttpServlet {
-
-
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException{
-		resp.setContentType("text/html");
-		PortfolioService portfolioService = new PortfolioService();
-		Portfolio portfolio1;
-		try{
-			portfolio1 = portfolioService.getPortfolio();
-			resp.getWriter().println(portfolio1.getHtmlString());	
-		}
-		catch (PortfolioFullException e) {
-			resp.getWriter().println("Sorry, You had reached maximum portfolio size!");
-		}
-		catch(StockAlreadyExistsException ee) {
-			resp.getWriter().println("Sorry, Stock already exists!");			
-		}
-		catch(BalanceException eee) {
-			resp.getWriter().println("Sorry, You do not have enough balane to buy this stock!");			
-		}
-		catch(StockNotEnoughException eeee) {
-			resp.getWriter().println("Sorry, You do not have enough from this stock!");			
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		resp.setContentType("application/json");
+		
+		PortfolioTotalStatus[] totalStatus = portfolioService.getPortfolioTotalStatus();
+		StockStatus[] stockStatusArray = portfolioService.getPortfolio().getStock();
+		List<StockStatus> stockStatusList = new ArrayList<>();
+		for (StockStatus ss : stockStatusArray) {
+			if(ss != null)
+				stockStatusList.add(ss);
 		}
 		
-		catch(StockNotExistException eeeee) {
-			resp.getWriter().println("Sorry, The stock does not exist!");			
-		}
-		
-				
-
+		PortfolioDto pDto = new PortfolioDto();
+		pDto.setTitle(portfolioService.getPortfolio().getTitle());
+		pDto.setTotalStatus(totalStatus);
+		pDto.setStockTable(stockStatusList);
+		resp.getWriter().print(withNullObjects().toJson(pDto));
 	}
-
 }

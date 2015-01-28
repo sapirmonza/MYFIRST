@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 public class Portfolio {
 	private static final Logger log = Logger.getLogger(Portfolio.class.getSimpleName());
-	private final static int MAX_PROTFOLIO_SIZE = 5;
+	public final static int MAX_PROTFOLIO_SIZE = 5;
 	private StockStatus[] stockStatus;
 	private int portfolioSize = 0;
 	private String title;
@@ -61,6 +61,14 @@ public class Portfolio {
 		
 	}
 	
+	
+	public Portfolio(List<StockStatus> stockStatuses) {
+		// TODO Auto-generated constructor stub
+		this(new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE",0);
+		for(int i = 0; i < portfolioSize; i++)
+			this.stockStatus[i] = stockStatuses.get(i);
+	}
+
 	public enum ALGO_RECOMMENDATION {
 		DO_NOTHING,SELL,BUY;
 	}
@@ -120,7 +128,7 @@ public class Portfolio {
 		this.balance = balance;
 	}
 
-	public void updateBalance(float amount){
+	public void updateBalance(float amount) throws BalanceException{
 		this.balance += amount;
 	}
 	
@@ -136,6 +144,15 @@ public class Portfolio {
 		return (this.getBalance()+this.getStocksValue());
 	}
 	
+	public StockStatus findBySymbol (String symbol)
+	{
+		for(int i = 0; i < portfolioSize; i++){
+			if(stockStatus[i].getsymbol().toLowerCase().equals(symbol))// == symbol)
+				return stockStatus[i];
+		}
+		return null;
+	}
+	
 	/**
 	* sellStock method sell the stock only if it is exist in the Portfolio 
 	* and only if there is enough quantity in the stockQuntity.
@@ -143,8 +160,9 @@ public class Portfolio {
 	* 1/12/14
 	* 
 	*/
-	public void sellStock(String symbol, int qu) throws StockNotEnoughException,StockNotExistException{
-		for(int i=0; i<=portfolioSize-1 ; i++ ){
+	public void sellStock(String symbol, int qu) throws StockNotEnoughException,StockNotExistException,BalanceException{
+		int i;
+		for(i=0; i<=portfolioSize-1 ; i++ ){
 			if(symbol.equals(this.stockStatus[i].getsymbol()) && qu == -1 ||symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuntity() == qu){
 				this.updateBalance(this.stockStatus[i].bid*this.stockStatus[i].getStockQuntity());
 				this.stockStatus[i].setStockQuntity(0);
@@ -158,8 +176,10 @@ public class Portfolio {
 				throw new StockNotEnoughException();
 			}
 		}
-		log.warning("Sorry, The stock does not exist");
-		throw new StockNotExistException();
+		if(i == portfolioSize){
+			log.warning("Sorry, The stock does not exist");
+			throw new StockNotExistException();
+		}
 	}
 	
 	
@@ -171,7 +191,8 @@ public class Portfolio {
 	* 
 	*/
 	public void buyStock(String symbol, int qu) throws BalanceException, StockNotExistException{
-		for(int i=0; i<=portfolioSize-1; i++ ){
+		int i;
+		for(i=0; i<=portfolioSize-1; i++ ){
 			if(symbol.equals(this.stockStatus[i].getsymbol()) && qu == -1){
 				this.stockStatus[i].setStockQuntity((int)(this.balance/this.stockStatus[i].ask));
 				this.updateBalance(-1*this.stockStatus[i].ask*this.stockStatus[i].getStockQuntity());
@@ -185,8 +206,10 @@ public class Portfolio {
 				throw new BalanceException();
 			}
 		}
-		log.warning("Sorry, The stock does not exist");
-		throw new StockNotExistException();
+		if(i == portfolioSize){
+			log.warning("Sorry, The stock does not exist");
+			throw new StockNotExistException();
+		}
 	}
 	
 	/**
@@ -198,8 +221,9 @@ public class Portfolio {
 	 * @throws  
 	* 
 	*/
-	public void removeStock(String symbol) throws StockNotEnoughException, StockNotExistException{
-		for(int i = 0; i<=portfolioSize-1; i++){
+	public void removeStock(String symbol) throws StockNotEnoughException, StockNotExistException,BalanceException{
+		int i;
+		for(i = 0; i<=portfolioSize-1; i++){
 			if(symbol.equals(this.stockStatus[i].getsymbol())){
 				this.sellStock(symbol,-1);
 				this.portfolioSize--;
@@ -211,8 +235,10 @@ public class Portfolio {
 			}
 					
 		}
-		log.warning("Sorry, The stock does not exist");
-		throw new StockNotExistException();
+		if(i == portfolioSize){
+			log.warning("Sorry, The stock does not exist");
+			throw new StockNotExistException();
+		}
 	}
 
 	

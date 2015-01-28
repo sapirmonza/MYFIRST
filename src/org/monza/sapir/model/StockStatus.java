@@ -33,7 +33,13 @@ public class StockStatus extends Stock {
 		this(stockStatus.getsymbol(),stockStatus.getAsk(),stockStatus.getBid(), new Date(stockStatus.getDate().getTime()), stockStatus.getStockQuntity(), stockStatus.getRecommendation());
 		
 		}
-	
+
+	public StockStatus(Stock stock) {
+		super(stock.getsymbol(), stock.getAsk(), stock.getBid(), stock.getDate());
+		stockQuntity = 0;
+		recommendation = ALGO_RECOMMENDATION.DO_NOTHING;
+	}
+
 	public ALGO_RECOMMENDATION getRecommendation() {
 		return recommendation;
 	}

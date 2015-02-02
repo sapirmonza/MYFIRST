@@ -65,7 +65,7 @@ public class Portfolio {
 	public Portfolio(List<StockStatus> stockStatuses) {
 		// TODO Auto-generated constructor stub
 		this(new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE",0);
-		for(int i = 0; i < portfolioSize; i++)
+		for(int i = 0; i < stockStatuses.size(); i++)
 			this.stockStatus[i] = stockStatuses.get(i);
 	}
 

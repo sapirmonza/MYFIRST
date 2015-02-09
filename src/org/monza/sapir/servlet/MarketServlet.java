@@ -35,7 +35,6 @@ public class MarketServlet extends AbstractAlgoServlet {
 	
 	/*@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
 		try {
 			resp.setContentType("application/json");
 			String symbol = req.getParameter("symbol");

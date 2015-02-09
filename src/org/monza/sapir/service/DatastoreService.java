@@ -34,6 +34,7 @@ import com.google.appengine.labs.repackaged.com.google.common.collect.Lists;
  * @author hanan.gitliz@gmail.com
  * @since Jan 5, 2015
  */
+
 public class DatastoreService {
 
 	private static final String SYMBOL = "symbol";
@@ -45,6 +46,10 @@ public class DatastoreService {
 	private static final String NAMESPACE_STOCK = "stock";
 	private static final String NAMESPACE_STOCK_SYMBOL = "stock_symbol";
 
+	private static final String NAMESPACE_ACCOUNT = "account";
+	private static final String BALANCE = "balance";
+	private static final String PASSWORD = "password";
+	private static final String USERNAME = "username";
 
 	private static final String NAMESPACE_PORTFOLIO = "portfolio";
 	private static final String TITLE = "title";
@@ -126,33 +131,24 @@ public class DatastoreService {
 	 * @param array - new selected symbols list.
 	 */
 	/*public void updateStockList(List<String> toPersist) {
-
 		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
 		//delete persisted symbols
 		Query q = new Query(NAMESPACE_STOCK_SYMBOL);
-
 		// Use PreparedQuery interface to retrieve results
 		PreparedQuery pq = datastore.prepare(q);
-
 		List<Key> keys = new ArrayList<Key>();
 		for (Entity result : pq.asIterable()) {
 			keys.add(result.getKey());
 		}
-
 		datastore.delete(keys);
-
 		//convert java list to google API entities.
 		List<Entity> store = new LinkedList<Entity>();
 		for (String s : toPersist) {
 			Key key = KeyFactory.createKey(NAMESPACE_STOCK_SYMBOL, s);
-
 			Entity entity = new Entity(key);
 			entity.setProperty("id", s);
-
 			store.add(entity);
 		}
-
 		//make store
 		datastore.put(store);
 	}*/
@@ -175,7 +171,26 @@ public class DatastoreService {
 		return ret;
 	}
 
-	
+	/*public Account loadAccount() {
+		Account account = new Account();
+		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Key key = KeyFactory.createKey(NAMESPACE_ACCOUNT, 1);
+		try {
+			Entity entity = datastore.get(key);
+			account.setUsername((String)entity.getProperty(USERNAME));
+			account.setPassword((String)entity.getProperty(PASSWORD));
+			Double balance = (Double)entity.getProperty(BALANCE);
+			account.setBalance(balance.floatValue());
+		} catch (EntityNotFoundException e) {
+			//no account details found - create a new object and store it to db.
+			account.setUsername("");
+			account.setPassword("");
+			account.setBalance(Account.DEFAULT_BALANCE);
+			Entity entity = accountToEntity(account);
+			datastore.put(entity);
+		}
+		return account;
+	}*/
 
 	public Portfolio loadPortfolilo() {
 		Portfolio portfolio;
@@ -202,7 +217,8 @@ public class DatastoreService {
 			portfolio.setTitle((String)entity.getProperty(TITLE));
 			try {
 				portfolio.updateBalance(((Double)entity.getProperty(PORTFOLIO_BALANCE)).floatValue());
-			} catch (BalanceException e) {
+			} 
+			catch (BalanceException e) {
 				//won't never happen
 			}
 
@@ -225,21 +241,20 @@ public class DatastoreService {
 	 * </ul>
 	 * @param updated
 	 */
+/*	public void updateAccount(Account updated) {
+		updateEntity(accountToEntity(updated));
+	}*/
 
 	public void updatePortfolio(Portfolio portfolio) {
-        updateEntity(portfolioToEntity(portfolio));
-        
-        List<StockStatus> stockList = new ArrayList<StockStatus>();
-        StockStatus[] array = portfolio.getStock();
-        
-        for (StockStatus stockStatus : array) {
-            if(stockStatus != null) {
-                stockList.add(stockStatus);
-            }
-        }
-        
-        updateStocks(stockList);
-    }
+		updateEntity(portfolioToEntity(portfolio));
+		StockStatus [] ss = portfolio.getStock();
+		ArrayList<StockStatus> arr = new ArrayList<StockStatus>();
+		for(StockStatus s : ss) {
+			if(s != null) arr.add(s);
+		}
+		
+		updateStocks(arr);
+	}
 
 	private void updateEntity(Entity entity) {
 		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -253,7 +268,7 @@ public class DatastoreService {
 		ret.setBid(((Double) stockEntity.getProperty(BID)).floatValue());
 		ret.setDate((Date) stockEntity.getProperty(DAY));
 		Long quantity = (Long) stockEntity.getProperty(STOCK_QUANTITY);
-		ret.setStockQuntity(quantity.intValue());
+		ret.setStockQuantity(quantity.intValue());
 		ret.setRecommendation(ALGO_RECOMMENDATION.valueOf((String) stockEntity.getProperty(RECOMMENDATION)));
 
 		return ret;
@@ -268,12 +283,19 @@ public class DatastoreService {
 		entity.setProperty(ASK, stock.getAsk());
 		entity.setProperty(BID, stock.getBid());
 		entity.setProperty(DAY, stock.getDate());
-		entity.setProperty(STOCK_QUANTITY, stock.getStockQuntity());
+		entity.setProperty(STOCK_QUANTITY, stock.getStockQuantity());
 		entity.setProperty(RECOMMENDATION, stock.getRecommendation().name());
 		
 		return entity;
 	}
 
+	/*private Entity accountToEntity(Account account) {
+		Entity entity = new Entity(NAMESPACE_ACCOUNT, 1);
+		entity.setProperty(USERNAME, account.getUsername());
+		entity.setProperty(PASSWORD, account.getPassword());
+		entity.setProperty(BALANCE, account.getBalance());
+		return entity;
+	}*/
 
 	private Entity portfolioToEntity(Portfolio portfolio) {
 		Entity entity = new Entity(NAMESPACE_PORTFOLIO, 1);
@@ -328,7 +350,7 @@ public class DatastoreService {
 		PreparedQuery pq = datastore.prepare(q);
 
 		for (Entity entity : pq.asIterable()) {
-			entity.setProperty(STOCK_QUANTITY, stockStatus.getStockQuntity());
+			entity.setProperty(STOCK_QUANTITY, stockStatus.getStockQuantity());
 			entity.setProperty(RECOMMENDATION, stockStatus.getRecommendation().name());
 			datastore.put(entity);
 			break;

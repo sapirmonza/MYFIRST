@@ -99,7 +99,7 @@ public class PortfolioService {
 				for (int j = 0; j < history.size(); j++) {
 					StockStatus curr = history.get(j);
 					Date date = dateMidnight(curr.getDate());
-					float value = curr.getBid()*curr.getStockQuntity();
+					float value = curr.getBid()*curr.getStockQuantity();
 					
 					Float total = map.get(date);
 					if(total == null) {
@@ -162,19 +162,18 @@ public class PortfolioService {
 			flush();
 		}
 	}
-
 	
-	public void buyStock(String symbol, int quantity) throws BalanceException, StockNotExistException {
+	public void buyStock(String symbol, int quantity) throws BalanceException, StockNotExistsException, IllegalQuantityException, StockNotExistException {
 		getPortfolio().buyStock(symbol, quantity);
 		flush();
 	}
 
-	public void sellStock(String symbol, int quantity) throws StockNotExistException, IllegalQuantityException, StockNotEnoughException, BalanceException {
+	public void sellStock(String symbol, int quantity) throws StockNotExistsException, IllegalQuantityException, BalanceException, StockNotEnoughException, StockNotExistException {
 		getPortfolio().sellStock(symbol, quantity);
 		flush();
 	}
 
-	public void removeStock(String symbol) throws StockNotExistException, IllegalQuantityException, StockNotEnoughException, BalanceException {
+	public void removeStock(String symbol) throws StockNotExistsException, IllegalQuantityException, BalanceException, StockNotEnoughException, StockNotExistException {
 		getPortfolio().removeStock(symbol);
 		flush();
 	}

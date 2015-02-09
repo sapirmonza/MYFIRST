@@ -7,7 +7,7 @@ import org.monza.sapir.model.Portfolio.ALGO_RECOMMENDATION;
 public class StockStatus extends Stock {
 
 	private ALGO_RECOMMENDATION recommendation;
-	private int stockQuntity;
+	private int stockQuantity;
 	
 	/**
 	* create new StockStatus
@@ -18,7 +18,7 @@ public class StockStatus extends Stock {
 	public StockStatus(String string, float Ask, float Bid, Date date1,int newStockQuntity, ALGO_RECOMMENDATION recom) {
 		super(string, Ask, Bid, date1);
 		// TODO Auto-generated constructor stub
-		stockQuntity = newStockQuntity;
+		stockQuantity = newStockQuntity;
 		recommendation = recom;
 	
 	}
@@ -30,13 +30,13 @@ public class StockStatus extends Stock {
 	* 
 	*/	
 	public StockStatus(StockStatus stockStatus){
-		this(stockStatus.getsymbol(),stockStatus.getAsk(),stockStatus.getBid(), new Date(stockStatus.getDate().getTime()), stockStatus.getStockQuntity(), stockStatus.getRecommendation());
+		this(stockStatus.getsymbol(),stockStatus.getAsk(),stockStatus.getBid(), new Date(stockStatus.getDate().getTime()), stockStatus.getStockQuantity(), stockStatus.getRecommendation());
 		
 		}
 
 	public StockStatus(Stock stock) {
 		super(stock.getsymbol(), stock.getAsk(), stock.getBid(), stock.getDate());
-		stockQuntity = 0;
+		stockQuantity = 0;
 		recommendation = ALGO_RECOMMENDATION.DO_NOTHING;
 	}
 
@@ -46,11 +46,14 @@ public class StockStatus extends Stock {
 	public void setRecommendation(ALGO_RECOMMENDATION recommendation) {
 		this.recommendation = recommendation;
 	}
-	public int getStockQuntity() {
-		return stockQuntity;
+	public int getStockQuantity() {
+		return stockQuantity;
 	}
-	public void setStockQuntity(int stockQuntity) {
-		this.stockQuntity = stockQuntity;
+	public void setStockQuantity(int stockQuntity) {
+		if(stockQuntity == 0)
+			this.stockQuantity = stockQuntity;
+		else
+			this.stockQuantity += stockQuntity;
 	}
 
 

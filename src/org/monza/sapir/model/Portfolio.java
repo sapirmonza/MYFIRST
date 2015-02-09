@@ -7,6 +7,7 @@ import org.monza.sapir.exception.PortfolioFullException;
 import org.monza.sapir.exception.StockAlreadyExistsException;
 import org.monza.sapir.exception.StockNotEnoughException;
 import org.monza.sapir.exception.StockNotExistException;
+import org.monza.sapir.exception.StockNotExistsException;
 //import org.monza.sapir.service.PortfolioService;
 import org.monza.sapir.model.StockStatus;
 
@@ -24,7 +25,7 @@ public class Portfolio {
 	private static final Logger log = Logger.getLogger(Portfolio.class.getSimpleName());
 	public final static int MAX_PROTFOLIO_SIZE = 5;
 	private StockStatus[] stockStatus;
-	private int portfolioSize = 0;
+	static int portfolioSize = 0;
 	private String title;
 	private float balance;
 
@@ -36,7 +37,7 @@ public class Portfolio {
 	*/
 	public Portfolio( StockStatus[] newStockStatus, int newPortfolioSize, String newTitle, float newBalance) {
 		stockStatus = newStockStatus;	
-		portfolioSize = newPortfolioSize;
+	//	portfolioSize = newPortfolioSize;
 		title = newTitle;
 		balance = newBalance;
 	}
@@ -51,11 +52,11 @@ public class Portfolio {
 	{
 		this( new StockStatus[MAX_PROTFOLIO_SIZE], 0, "UNKNOWE",0);
 		
-		for(int i = 0; i < portfolio.portfolioSize ; i++){
+		for(int i = 0; i < portfolioSize ; i++){
 			stockStatus[i] = new StockStatus(portfolio.stockStatus[i]);
 		}
 		this.setTitle(portfolio.getTitle());
-		this.portfolioSize = portfolio.portfolioSize;
+		//this.portfolioSize = portfolio.portfolioSize;
 		this.balance = portfolio.balance;
 
 		
@@ -81,7 +82,7 @@ public class Portfolio {
 	*/
 
 	public void addStock(Stock stock) throws StockAlreadyExistsException, PortfolioFullException{
-		if(this.portfolioSize<MAX_PROTFOLIO_SIZE){
+		if(portfolioSize<MAX_PROTFOLIO_SIZE){
 			for(int i=0; i<=portfolioSize-1; i++){
 				if(stock.getsymbol().equals(this.stockStatus[i].getsymbol())){
 					log.warning("Sorry, Stock " + stock.getsymbol() + " already exists");
@@ -135,7 +136,7 @@ public class Portfolio {
 	public float getStocksValue(){
 		float totalValueStocks = 0;
 		for(int i=0; i<=portfolioSize-1; i++){
-			totalValueStocks += this.stockStatus[i].bid*this.stockStatus[i].getStockQuntity();
+			totalValueStocks += this.stockStatus[i].bid*this.stockStatus[i].getStockQuantity();
 		}
 		return totalValueStocks;
 	}
@@ -163,22 +164,23 @@ public class Portfolio {
 	public void sellStock(String symbol, int qu) throws StockNotEnoughException,StockNotExistException,BalanceException{
 		int i;
 		for(i=0; i<=portfolioSize-1 ; i++ ){
-			if(symbol.equals(this.stockStatus[i].getsymbol()) && qu == -1 ||symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuntity() == qu){
-				this.updateBalance(this.stockStatus[i].bid*this.stockStatus[i].getStockQuntity());
-				this.stockStatus[i].setStockQuntity(0);
+			if(symbol.equals(this.stockStatus[i].getsymbol()) && qu == -1 ||symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuantity() == qu){
+				this.updateBalance(this.stockStatus[i].bid*this.stockStatus[i].getStockQuantity());
+				this.stockStatus[i].setStockQuantity(0);
 				}
-			else if(symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuntity()>qu){
+			else if(symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuantity()>qu){
 				this.updateBalance(this.stockStatus[i].bid*qu);
-				this.stockStatus[i].setStockQuntity(-qu);
+				this.stockStatus[i].setStockQuantity(-qu);
 			}
-			else if(symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuntity()<qu){
+			else if(symbol.equals(this.stockStatus[i].getsymbol()) && this.stockStatus[i].getStockQuantity()<qu){
 				log.warning("Sorry, You do not have enough from this stock");
 				throw new StockNotEnoughException();
 			}
-		}
-		if(i == portfolioSize){
-			log.warning("Sorry, The stock does not exist");
-			throw new StockNotExistException();
+		
+			else if(i == portfolioSize){
+				log.warning("Sorry, The stock does not exist");
+				throw new StockNotExistException();
+			}
 		}
 	}
 	
@@ -194,21 +196,23 @@ public class Portfolio {
 		int i;
 		for(i=0; i<=portfolioSize-1; i++ ){
 			if(symbol.equals(this.stockStatus[i].getsymbol()) && qu == -1){
-				this.stockStatus[i].setStockQuntity((int)(this.balance/this.stockStatus[i].ask));
-				this.updateBalance(-1*this.stockStatus[i].ask*this.stockStatus[i].getStockQuntity());
+				this.stockStatus[i].setStockQuantity((int)(this.balance/this.stockStatus[i].ask));
+				this.updateBalance(-1*this.stockStatus[i].ask*this.stockStatus[i].getStockQuantity());
 			}
 			else if(symbol.equals(this.stockStatus[i].getsymbol()) && this.balance>this.stockStatus[i].ask*qu){
-				this.stockStatus[i].setStockQuntity(qu);
+				this.stockStatus[i].setStockQuantity(qu);
 				this.updateBalance(this.stockStatus[i].ask*qu*-1);
 			}
 			else if (symbol.equals(this.stockStatus[i].getsymbol()) && this.balance<this.stockStatus[i].ask*qu){
 				log.warning("Sorry, You do not have enough balane to buy this stock");
 				throw new BalanceException();
 			}
-		}
-		if(i == portfolioSize){
-			log.warning("Sorry, The stock does not exist");
-			throw new StockNotExistException();
+		
+			else if(i == portfolioSize){
+				log.warning("Sorry, The stock does not exist");
+				throw new StockNotExistException();
+			
+			}
 		}
 	}
 	
@@ -226,7 +230,7 @@ public class Portfolio {
 		for(i = 0; i<=portfolioSize-1; i++){
 			if(symbol.equals(this.stockStatus[i].getsymbol())){
 				this.sellStock(symbol,-1);
-				this.portfolioSize--;
+				portfolioSize--;
 				for(int j=i; j<=portfolioSize-1; j++){
 					this.stockStatus[j] = this.stockStatus[j+1];
 					
@@ -234,10 +238,11 @@ public class Portfolio {
 				
 			}
 					
-		}
-		if(i == portfolioSize){
-			log.warning("Sorry, The stock does not exist");
-			throw new StockNotExistException();
+		
+			else if(i == portfolioSize){
+				log.warning("Sorry, The stock does not exist");
+				throw new StockNotExistException();
+			}
 		}
 	}
 
@@ -257,7 +262,7 @@ public class Portfolio {
 			getHtmlString += "<b>Portfolio Value: </b>"+this.getTotalValue()+"$ <b>Total Stocks value: </b>"+this.getStocksValue()+"$ <b>Balance: </b>"+this.getBalance()+"$<br><br>";
 			getHtmlString += "<U><b><H3>Stocks:</H3></b></U><br>";
 			for(int i = 0; i<=portfolioSize-1;i++){
-				getHtmlString +="<b>Stock "+(i+1)+".</b> "+ stockStatus[i].getHtmlDescription()+"<b> Quntity</b>: "+this.stockStatus[i].getStockQuntity()+"<br>";
+				getHtmlString +="<b>Stock "+(i+1)+".</b> "+ stockStatus[i].getHtmlDescription()+"<b> Quntity</b>: "+this.stockStatus[i].getStockQuantity()+"<br>";
 			}
 			return getHtmlString;
 	}
